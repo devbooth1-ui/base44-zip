@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Par 3 Challenge</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <header>
+            <h1>Par 3 Challenge</h1>
+            <div id="scoreboard">
+                <span id="hole-info">Hole: <span id="current-hole">1</span>/9</span>
+                <span id="strokes-info">Strokes: <span id="current-strokes">0</span></span>
+                <span id="total-score-info">Total: <span id="total-score">0</span></span>
+            </div>
+        </header>
+        
+        <main>
+            <canvas id="game-canvas" width="800" height="600"></canvas>
+            
+            <div id="controls">
+                <div id="power-control">
+                    <label for="power">Power:</label>
+                    <div id="power-meter">
+                        <div id="power-fill"></div>
+                    </div>
+                    <span id="power-value">0%</span>
+                </div>
+                
+                <div id="aim-control">
+                    <label for="aim">Aim: <span id="aim-value">0°</span></label>
+                    <input type="range" id="aim" min="-45" max="45" value="0" step="1">
+                </div>
+                
+                <div id="club-selection">
+                    <label for="club">Club:</label>
+                    <select id="club">
+                        <option value="driver">Driver (Long)</option>
+                        <option value="iron" selected>Iron (Medium)</option>
+                        <option value="wedge">Wedge (Short)</option>
+                        <option value="putter">Putter</option>
+                    </select>
+                </div>
+                
+                <button id="swing-btn">Swing!</button>
+            </div>
+            
+            <div id="message-area">
+                <p id="game-message">Click and hold "Swing!" to build power, release to hit!</p>
+            </div>
+        </main>
+        
+        <div id="game-over" class="hidden">
+            <h2>Game Over!</h2>
+            <p>Final Score: <span id="final-score">0</span></p>
+            <p>Par: 27</p>
+            <p id="score-description"></p>
+            <button id="play-again-btn">Play Again</button>
+        </div>
+    </div>
+    
+    <script src="js/game.js"></script>
+</body>
+</html>
