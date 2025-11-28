@@ -14,7 +14,12 @@ const CONFIG = {
     HOLE_RADIUS: 10,
     FLAG_HEIGHT: 40,
     FRICTION: 0.98,
+    BUNKER_FRICTION: 0.92,
     MIN_VELOCITY: 0.1,
+    MAX_SPEED: 15,
+    MAX_HOLE_ENTRY_SPEED: 3,
+    PIXELS_PER_YARD: 5,
+    DIMPLE_ANIMATION_SPEED: 100,
     CLUBS: {
         driver: { power: 1.0, name: 'Driver' },
         iron: { power: 0.7, name: 'Iron' },
@@ -258,7 +263,7 @@ function executeSwing(e) {
     const finalAngle = baseAngle + aimRadians;
     
     // Calculate velocity
-    let speed = (gameState.power / 100) * 15 * clubPower;
+    let speed = (gameState.power / 100) * CONFIG.MAX_SPEED * clubPower;
     
     // Reduce speed if in bunker
     if (gameState.inBunker) {
@@ -310,7 +315,7 @@ function update() {
             Math.pow(gameState.ball.y - bunker.y, 2)
         );
         if (dist < bunker.radius) {
-            friction = 0.92;
+            friction = CONFIG.BUNKER_FRICTION;
             gameState.inBunker = true;
             break;
         }
@@ -373,7 +378,7 @@ function update() {
         Math.pow(gameState.ball.vy, 2)
     );
     
-    if (distToHole < CONFIG.HOLE_RADIUS && ballSpeed < 3) {
+    if (distToHole < CONFIG.HOLE_RADIUS && ballSpeed < CONFIG.MAX_HOLE_ENTRY_SPEED) {
         // Ball is in the hole!
         ballInHole();
         return;
@@ -388,7 +393,7 @@ function update() {
         if (gameState.inBunker) {
             updateMessage("In the bunker! Use a wedge to escape.");
         } else {
-            const distDisplay = Math.round(distToHole / 5);
+            const distDisplay = Math.round(distToHole / CONFIG.PIXELS_PER_YARD);
             updateMessage(`Ball stopped. ${distDisplay} yards to the hole.`);
         }
     }
@@ -601,7 +606,7 @@ function render() {
     
     // Draw ball dimples
     ctx.fillStyle = '#f0f0f0';
-    const dimpleAngle = Date.now() / 100;
+    const dimpleAngle = Date.now() / CONFIG.DIMPLE_ANIMATION_SPEED;
     for (let i = 0; i < 4; i++) {
         const angle = dimpleAngle + (i * Math.PI / 2);
         const dimpleX = gameState.ball.x + Math.cos(angle) * 3;
